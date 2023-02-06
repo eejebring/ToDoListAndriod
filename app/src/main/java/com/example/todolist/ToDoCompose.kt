@@ -8,32 +8,32 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavController
 import com.example.todolist.ToDoItem
 
+
 @Composable
-fun ToDoCompose(item: ToDoItem) {
-    val toDo = remember { mutableStateOf(ToDoItem("the other thing")) }
-    var num = remember { mutableStateOf(0) }
+fun ToDoCompose(toDoItem: ToDoItem, ID: Int, navController: NavController) {
     Divider()
     Box (Modifier
         .fillMaxWidth()
-        .clickable { num.value++ }
+        .clickable {
+            navController.navigate("ToDoDetails/$ID")
+        }
     ) {
         Checkbox(
-            toDo.value.isDone,
-            { toDo.value.toggleDone() },
+            toDoItem.isDone,
+            { toDoItem.toggleDone() },
             Modifier.align(Alignment.CenterStart)
         )
-        Text(toDo.value.getTitle() + num.value,
+        Text(
+            toDoItem.getTitle(),
             Modifier.align(Alignment.Center)
         )
         Icon(

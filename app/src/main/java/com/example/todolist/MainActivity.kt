@@ -11,9 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.todolist.ui.theme.ToDoCompose
 import com.example.todolist.ui.theme.ToDoListTheme
 
@@ -33,18 +35,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Heading(text: String) {
-    Text(text = text,
-        style = MaterialTheme.typography.h2
-        )
-}
-
-@Composable
 fun start() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "layout") {
         composable("layout") { layout(navController) }
         composable("newToDo") { Heading("hi") }
+        composable("ToDoDetails/{ToDoID}", arguments = listOf(navArgument("ToDoID") {type = NavType.IntType})) { args -> Heading(args.arguments?.getInt("ToDoID").toString()) }
     }
 }
 
@@ -53,7 +49,6 @@ fun layout(navController: NavHostController) {
     val listOfToDos = remember {
         mutableListOf(ToDoItem("Do the thing"), ToDoItem("the other thing"))
     }
-
     Column (horizontalAlignment = Alignment.CenterHorizontally) {
         Row {
             Heading("Your To-do list")
@@ -61,15 +56,21 @@ fun layout(navController: NavHostController) {
         Row {
             Button(
                 onClick = { navController.navigate("newToDo")},
-
             ) {
                 Text("New: to-do")
             }
         }
-        for (toDo in listOfToDos) {
-            ToDoCompose(toDo)
+        for (toDoID in 0..listOfToDos.lastIndex) {
+            ToDoCompose(listOfToDos[toDoID], toDoID, navController)
         }
     }
+}
+
+@Composable
+fun Heading(text: String) {
+    Text(text = text,
+        style = MaterialTheme.typography.h2
+    )
 }
 
 @Preview(showBackground = true)
