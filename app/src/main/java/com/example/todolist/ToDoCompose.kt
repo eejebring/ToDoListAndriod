@@ -1,4 +1,4 @@
-package com.example.todolist.ui.theme
+package com.example.todolist
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,30 +10,27 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.todolist.ToDoItem
 
 
 @Composable
-fun ToDoCompose(toDoItem: ToDoItem, ID: Int, navController: NavController) {
+fun ToDoCompose(toDoID: Int, navController: NavController) {
     Divider()
     Box (Modifier
         .fillMaxWidth()
         .clickable {
-            navController.navigate("ToDoDetails/$ID")
+            navController.navigate("ToDoDetails/$toDoID")
         }
     ) {
         Checkbox(
-            toDoItem.isDone,
-            { toDoItem.toggleDone() },
+            listOfToDos[toDoID].isDone.value,
+            { listOfToDos[toDoID].toggleDone() },
             Modifier.align(Alignment.CenterStart)
         )
         Text(
-            toDoItem.getTitle(),
+            listOfToDos[toDoID].title.value,
             Modifier.align(Alignment.Center)
         )
         Icon(
