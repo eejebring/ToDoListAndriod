@@ -1,21 +1,20 @@
 package com.example.todolist
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
 class ToDoItem {
     var isDone = mutableStateOf(false)
     var title = mutableStateOf("Unnamed to-do")
-    var content = mutableStateOf("To-do description")
+    var description = mutableStateOf("To-do description")
 
     constructor() {}
     constructor(title: String) {
         this.title.value = title
     }
-    constructor(isDone: Boolean, title: String, content: String) {
+    constructor(isDone: Boolean, title: String, description: String) {
         this.isDone.value = isDone
         this.title.value = title
-        this.content.value = content
+        this.description.value = description
     }
 
     fun toggleDone() {
@@ -23,6 +22,6 @@ class ToDoItem {
     }
 
     fun clone(): ToDoItem {
-        return ToDoItem(this.isDone.value, this.title.value, this.content.value)
+        return ToDoItem(this.isDone.value, this.title.value, this.description.value)
     }
 }
